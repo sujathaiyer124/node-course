@@ -1,0 +1,4 @@
+//create npm project command:npm init
+//install nodemon in project:   npm install --save-dev nodemon
+//to install express js:        npm install express --save
+//to install ejs,pug,handlebars: npm install --save ejs pug express-handlebars 
