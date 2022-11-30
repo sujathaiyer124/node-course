@@ -9,7 +9,7 @@ const router = express.Router();
 const products = [];
 
 router.get('/add-product', (req, res, next) => {
-    res.render('add-product', { pageTitle: 'Add-Product', path: '/admin/add-product' });
+    res.render('add-product', { pageTitle: 'Add-Product', path: '/admin/add-product', formCSS:true ,productCSS:true , activeAddProduct:true});
     //res.sendFile(path.join(routeDir, 'views', 'add-product.html'));
     // next();//Allows the request to continue to the next middleware
 });

@@ -6,13 +6,14 @@ html(lang="en")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         title #{pageTitle} 
         link(rel="stylesheet", href="/css/main.css")
+        link(rel="stylesheet", href="/css/form.css")
         block styles
     body 
         header.main-header
             nav.main-header_nav
                 ul.main-header_item-list
                     li.main-header_item
-                        a(href="/") Shop
+                        a(href="/", class=(path === '/' ? 'active' : '')) Shop
                     li.main-header_item
                         a(href="/admin/add-product", class=(path === '/admin/add-product' ? 'active' : '')) Add Product
 
