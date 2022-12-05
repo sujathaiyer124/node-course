@@ -3,17 +3,17 @@ const path = require('path');
 const express = require('express');
 
 const bodyParser = require('body-parser');
-const expressHbs = require('express-handlebars');//handlebars are imported
+//const expressHbs = require('express-handlebars');//handlebars are imported
 
 
 const app = express();
 
 
-app.engine('hbs', expressHbs({
-    layoutsDir: 'views/layouts', defaultLayout: 'main-layout', extname: 'hbs'
-}));//engine method register a new templating engine
+//app.engine('hbs', expressHbs({
+//    layoutsDir: 'views/layout', defaultLayout: 'main-layout', extname: '.hbs'
+//}));//engine method register a new templating engine
 
-app.set('view engine', 'hbs');
+app.set('view engine', 'ejs');
 //app.set('view engine', 'pug'); For using pug //global configuration value. App set allows us to set values globally on express application
 //Syntax:app.set(name,value)
 app.set('views', 'views');
