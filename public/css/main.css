@@ -46,9 +46,10 @@ main {
 
 .main-header_item a:hover,
 .main-header_item a:active,
-.main-header_item a:active {
+.main-header_item a.active {
     color: #ffeb3b;
 }
+
 .grid {
     display: flex;
     flex-wrap: wrap;
