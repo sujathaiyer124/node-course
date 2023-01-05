@@ -1,0 +1,80 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/form.css">
+    <link rel="stylesheet" href="/css/product.css">
+    </head>
+
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+            <main>
+                <form class="product-form"
+                    action="/admin/<% if (editing) { %>edit-product<% } else { %>add-product<% } %>" method="POST">
+                    <div class="form-control">
+                        <label for="title">Title</label>
+                        <input type="text" name="title" id="title"
+                            value="<% if (editing) { %><%= product.title %><% } %>">
+                    </div>
+
+                    <div class="form-control">
+                        <label for="imageUrl">IMAGE URL</label>
+                        <input type="text" name="imageUrl" id="imageUrl"
+                            value="<% if (editing) { %><%= product.imageUrl %><% } %>">
+                    </div>
+
+                    <div class=" form-control">
+                        <label for="price">Price</label>
+                        <input type="number" name="price" id="price" step="0.01"
+                            value="<% if (editing) { %><%= product.price %><% } %>">
+                    </div>
+
+                    <div class="form-control">
+                        <label for="description">Description</label>
+                        <textarea name="description" id="description" rows="5">
+                            <% if (editing) { %>
+                                <%= product.description %>
+                                    <% } %>
+                        </textarea>
+                    </div>
+                       <% if (editing) { %> 
+                            <input type="hidden" value="<%= product.id %>" name="productId">
+                        <% } %> 
+                    <button class="btn" type="submit">
+                        <% if (editing) { %>Update Product<% } else { %>Add Product<% } %>
+                    </button>
+                </form>
+            </main>
+            <%- include('../includes/end.ejs') %>
+
+
+                <!--<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= pageTitle %>
+    </title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/form.css">
+    <link rel="stylesheet" href="/css/product.css">
+</head>
+<body>
+    <header class="main-header">
+        <nav class="main-header_nav">
+            <ul class="main-header_item-list">
+                <li class="main-header_item"><a href="/">Shop</a></li>
+                <li class="main-header_item"><a class="active" href="/admin/add-product">Add Product</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <form class="product-form" action="/admin/add-product" method="POST">
+            <div class="form-control">
+                <label for="title">Title</label>
+                <input type="text" name="title" id="title">
+            </div>
+            <button class="btn" type="submit">Add Product</button>
+        </form>
+    </main>
+</body>
+</html>
