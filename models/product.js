@@ -1,15 +1,16 @@
 //to save it in file import file 
-const fs = require('fs');
-const path = require('path');
+//const fs = require('fs');
+//const path = require('path');
+const db = require('../util/database');
 
 const Cart = require('./cart');
-const p = path.join(
+/*const p = path.join(
     path.dirname(process.mainModule.filename),
     'data',
     'products.json'
-);
+);*/
 //const products = []; we save our product to a file and not to this array anymore
-const getProductsFromFile = cb => {
+/*const getProductsFromFile = cb => {
     fs.readFile(p, (err, fileContent) => {
 
         if (err) {
@@ -21,7 +22,7 @@ const getProductsFromFile = cb => {
         }
     });
     //return products;
-};//helper function
+};//helper function*/
 module.exports = class Product {
     constructor(id, title, imageUrl, description, price) {
         this.id = id;
@@ -31,7 +32,9 @@ module.exports = class Product {
         this.price = price;
     }
     save() {
-        getProductsFromFile(products => {
+        return db.execute
+            ('INSERT INTO products (title,price,description,imageUrl)VALUES (?,?,?,?)', [this.title, this.price, this.description, this.imageUrl]);
+        /*getProductsFromFile(products => {
             if (this.id) {
                 const existingProductIndex = products.findIndex(
                     prod => prod.id === this.id
@@ -48,7 +51,7 @@ module.exports = class Product {
                     console.log(err);
                 });
             }
-        });
+        });*/
     }
     /*const p = path.join(
         //path.dirname(process.mainModule.filename),
@@ -65,7 +68,7 @@ module.exports = class Product {
     //});
     //products.push(this);
     static deleteById(id) {
-        getProductsFromFile(products => {
+        /*getProductsFromFile(products => {
             const product = products.find(prod => prod.id === id);
             const updatedProducts = products.filter(prod => prod.id !== id);//filter also takes an anonymous function and will return all elements as part of a new array that do match with crietria .
             fs.writeFile(p, JSON.stringify(updatedProducts), err => {
@@ -73,15 +76,21 @@ module.exports = class Product {
                     Cart.deleteProduct(id, product.price);
                 }
             });
-        });
+        });*/
     }
-    static fetchAll(cb) {
-        getProductsFromFile(cb);
+    static fetchAll() {
+        return db.execute('SELECT * FROM products');
     }
-    static findById(id, cb) {
-        getProductsFromFile(products => {
-            const product = products.find(p => p.id === id);//a default javascript method.This will execute a function we pass to find on every element in the array.
-            cb(product);
-        });
+    static findById(id) {
+        return db.execute('SELECT * FROM products WHERE products.id=?', [id]);
     }
+    //static fetchAll(cb) {
+    // getProductsFromFile(cb);
+    //}
+    //static findById(id, cb) {
+    /* getProductsFromFile(products => {
+         const product = products.find(p => p.id === id);//a default javascript method.This will execute a function we pass to find on every element in the array.
+         cb(product);
+     });*/
+    //}
 };
