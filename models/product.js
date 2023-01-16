@@ -1,4 +1,41 @@
-//to save it in file import file 
+const Sequelize = require('sequelize');
+
+const sequelize = require('../util/database');
+
+const Product = sequelize.define('product', {
+    id:{
+        type:Sequelize.INTEGER,
+        autoIncrement:true,
+        allowNull:false,
+    primaryKey:true
+    },
+    title:Sequelize.STRING,
+    price:{
+        type:Sequelize.DOUBLE,
+        allowNull:false
+    },
+    imageUrl:{
+        type:Sequelize.STRING,
+        allowNull:false
+    },
+    description: {
+        type:Sequelize.STRING,
+        allowNull:false
+    }
+});
+
+module.exports = Product;
+
+
+
+
+
+
+
+
+
+
+/*//to save it in file import file 
 //const fs = require('fs');
 //const path = require('path');
 const db = require('../util/database');
@@ -23,7 +60,7 @@ const Cart = require('./cart');
     });
     //return products;
 };//helper function*/
-module.exports = class Product {
+/*module.exports = class Product {
     constructor(id, title, imageUrl, description, price) {
         this.id = id;
         this.title = title;
@@ -52,7 +89,7 @@ module.exports = class Product {
                 });
             }
         });*/
-    }
+    //}
     /*const p = path.join(
         //path.dirname(process.mainModule.filename),
         //'data',
@@ -67,7 +104,7 @@ module.exports = class Product {
     //console.log(fileContent);
     //});
     //products.push(this);
-    static deleteById(id) {
+   // static deleteById(id) {
         /*getProductsFromFile(products => {
             const product = products.find(prod => prod.id === id);
             const updatedProducts = products.filter(prod => prod.id !== id);//filter also takes an anonymous function and will return all elements as part of a new array that do match with crietria .
@@ -77,13 +114,13 @@ module.exports = class Product {
                 }
             });
         });*/
-    }
-    static fetchAll() {
+    //}
+    /* static fetchAll() {
         return db.execute('SELECT * FROM products');
     }
     static findById(id) {
         return db.execute('SELECT * FROM products WHERE products.id=?', [id]);
-    }
+    }*/
     //static fetchAll(cb) {
     // getProductsFromFile(cb);
     //}
@@ -93,4 +130,4 @@ module.exports = class Product {
          cb(product);
      });*/
     //}
-};
+//};
