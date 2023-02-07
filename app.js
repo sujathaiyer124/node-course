@@ -7,6 +7,9 @@ const bodyParser = require('body-parser');
 
 const errorController = require('./controllers/error');
 
+const mongoConnect = require('./util/database').mongoConnect;
+const User = require('./models/user');
+/*Sequelize imports
 const sequelize = require('./util/database');
 //const db= require('./util/database');
 const Product = require('./models/product');
@@ -15,7 +18,7 @@ const Cart = require('./models/cart');
 const CartItem = require('./models/cart-item');
 const Order = require('./models/orders');
 const OrderItem = require('./models/order-item');
-
+*/
 const app = express();
 
 
@@ -44,12 +47,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req, res, next) => {
-  User.findByPk(2)
-    .then(user => {
-      req.user = user;
-      next();
-    })
-    .catch(err => console.log(err));
+   User.findByPk('63d75b1842825ed569af8215')
+     .then(user => {
+    req.user = new User(user.name,user.email, user.cart,user._id);
+     next();
+   })
+   .catch(err => console.log(err));
 });
 
 app.use('/admin', adminRoutes);
@@ -73,6 +76,7 @@ app.use(errorController.get404page);
 //const server = http.createServer(app);
 
 //Defining Relations
+/*Sequielize 
 Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE' });
 User.hasMany(Product);
 User.hasOne(Cart);
@@ -107,5 +111,9 @@ sequelize
   .catch(err => {
     console.log(err);
   });
-
+*/
+mongoConnect(() => {
+  // console.log(client);
+  app.listen(3000);
+});
 //server.listen(3000);

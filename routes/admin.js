@@ -7,9 +7,10 @@ const adminController = require('../controllers/admin');
 const router = express.Router();
 
 //const products = [];
-
+//admin/add-product =>GET
 router.get('/add-product', adminController.getAddproduct);
 
+//admin/add-product =>GET
 router.get('/products', adminController.getProducts);
 //res.sendFile(path.join(routeDir, 'views', 'add-product.html'));
 // next();//Allows the request to continue to the next middleware
@@ -26,6 +27,7 @@ router.get('/products', adminController.getProducts);
 
     res.redirect('/');
 });*/
+//admin/add-product =>POST
 router.post('/add-product', adminController.postAddproduct);
 
 router.get('/edit-product/:productId', adminController.getEditproduct);
