@@ -3,7 +3,9 @@ const path = require('path');
 const express = require('express');
 
 const bodyParser = require('body-parser');
-const mongoose =require('mongoose');
+const mongoose = require('mongoose');
+const session = require('express-session');
+const MongoDBStore = require('connect-mongodb-session')(session);
 //const expressHbs = require('express-handlebars');//handlebars are imported
 
 const errorController = require('./controllers/error');
@@ -11,9 +13,14 @@ const errorController = require('./controllers/error');
 //const mongoConnect = require('./util/database').mongoConnect;
 const User = require('./models/user');
 
+const MONGODB_URI = 'mongodb+srv://amma:JtQqu5wWTRgw1fxC@node-cluster0.s7oljdr.mongodb.net/shop';
 
 const app = express();
+const store = new MongoDBStore({
+  uri: MONGODB_URI,
+  collection: 'sessions'
 
+});
 //app.engine('hbs', expressHbs({
 //    layoutsDir: 'views/layout', defaultLayout: 'main-layout', extname: '.hbs'
 //}));//engine method register a new templating engine
@@ -26,50 +33,48 @@ app.set('views', 'views');
 //const adminData = require('./routes/admin');
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
-
-/*db.execute('SElect * FROM products')
-.then(result => {
- console.log(result[0],result[1]);
-})
-.catch(err => {
- console.log(err);
-}); some testing code*/
+const authRoutes = require('./routes/auth');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(
+  session({ secret: 'my secret', resave: false, saveUninitialized: false, store: store })
+);
 
 app.use((req, res, next) => {
-   User.findById('63e68080822b9c6f1e082b30')
-     .then(user => {
-    req.user = user;
-     next();
-   })
-   .catch(err => console.log(err));
+  if(!req.session.user){
+    return next();
+  }
+  User.findById(req.session.user._id)
+    .then(user => {
+      req.user = user;
+      next();
+    })
+    .catch(err => console.log(err));
 });
 
 app.use('/admin', adminRoutes);
-
-
 app.use(shopRoutes);
+app.use(authRoutes);
 
 app.use(errorController.get404page);
 
 mongoose
-  .connect('mongodb+srv://amma:JtQqu5wWTRgw1fxC@node-cluster0.s7oljdr.mongodb.net/shop')
-.then(result =>{
-  User.findOne().then(user=>{
-    if(!user){
-      const user = new User({
-        name:'Sujatha',
-        email:'dummy@yahoo.com',
-        cart:{
-          items:[]
-        }
-      });
-      user.save();    
-    }
+  .connect(MONGODB_URI)
+  .then(result => {
+    User.findOne().then(user => {
+      if (!user) {
+        const user = new User({
+          name: 'Sujatha',
+          email: 'dummy@yahoo.com',
+          cart: {
+            items: []
+          }
+        });
+        user.save();
+      }
+    });
+    app.listen(3000);
+  }).catch(err => {
+    console.log(err);
   });
-  app.listen(3000);
-}).catch(err => {
-  console.log(err);
-});
